@@ -4,13 +4,16 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [prices, setPrices] = useState<{ bitcoin?: number; ethereum?: number }>(
-    {},
+    {}
   );
 
   useEffect(() => {
     const socket = new WebSocket(
-      "wss://ws.coincap.io/prices?assets=bitcoin,ethereum",
+      "wss://ws.coincap.io/prices?assets=bitcoin,ethereum"
     );
+    socket.onopen = () => console.log("WebSocket 已成功連線！");
+    socket.onerror = (err) => console.error("WebSocket 連線失敗:", err);
+
     //WebSocket 的「監聽器」
     socket.onmessage = (e) => {
       const data = JSON.parse(e.data);
